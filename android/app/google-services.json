@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "859170028928",
+    "project_id": "expensemanagement-d1b69",
+    "storage_bucket": "expensemanagement-d1b69.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:859170028928:android:34a368e41fbd633e6a5565",
+        "android_client_info": {
+          "package_name": "com.sharanji.expense_management"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "859170028928-41bvhl8rn6j4o7gn3u5d33ou206trehk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBa0KbI9yu4LcGHxHXTDwXAeawVQAocrOU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "859170028928-41bvhl8rn6j4o7gn3u5d33ou206trehk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
