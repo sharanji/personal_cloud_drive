@@ -8,7 +8,7 @@ class AuthInitial extends AuthState {}
 class AuthLoading extends AuthState {}
 
 class AuthSuccess extends AuthState {
-  Logindetails user;
+  LoginDetails user;
   AuthSuccess(this.user);
 }
 

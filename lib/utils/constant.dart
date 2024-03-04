@@ -6,5 +6,6 @@ List<Widget> pages = [
   HomeScreen(),
   const StarredScreen(),
   SharedScreen(),
+  HomeScreen(),
   FilesScreen(),
 ];

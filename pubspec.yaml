@@ -18,6 +18,11 @@ dependencies:
   flutter_svg: ^1.0.3
   flutter_bloc: 
   flutter_form_builder:
+  file_picker: ^5.3.1
+  http: 
+  shared_preferences:
+  flutter_cached_pdfview: ^0.4.2
+  flutter_file_view: ^2.2.1
 
 dev_dependencies:
   flutter_lints: ^1.0.0

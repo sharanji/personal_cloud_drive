@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:bloc/bloc.dart';
 import 'package:google_drive_clone/main.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../models/logindetails.dart';
 import '../../repository/auth.dart';
 part 'auth_event.dart';
@@ -17,22 +20,31 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(AuthLoading());
     Map loginData = event.data;
 
-    Logindetails? logedIn = Logindetails(
-        userId: 1,
-        firstName: 'sharanji',
-        lastName: 'p',
-        userName: loginData['email'],
-        message: 'good boy',
-        contactNumber: '87777777',
-        attachmentId: 0);
-    // await AuthRepository.login(loginData);
-    if (logedIn == null) {
-      emit(AuthFailure("Invalid Username or password"));
+    Map logedIn = await AuthRepository.login(loginData);
+    if (logedIn['data'] == null) {
+      emit(AuthFailure(logedIn['message']));
       return;
     }
 
-    emit(AuthSuccess(logedIn));
+    userId = logedIn['data'].id;
+    emit(AuthSuccess(logedIn['data']));
   }
 
-  Future authCheck(event, state) async {}
+  Future authCheck(event, state) async {
+    final pref = await SharedPreferences.getInstance();
+    if (!pref.containsKey('logindata')) {
+      emit(AuthFailure('Login to continue'));
+      return;
+    }
+
+    Map loginData = jsonDecode(pref.getString('logindata')!);
+    Map logedIn = await AuthRepository.login(loginData);
+    if (logedIn['data'] == null) {
+      emit(AuthFailure(logedIn['message']));
+      return;
+    }
+
+    userId = logedIn['data'].id;
+    emit(AuthSuccess(logedIn['data']));
+  }
 }

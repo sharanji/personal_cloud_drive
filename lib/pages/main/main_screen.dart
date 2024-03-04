@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:google_drive_clone/logic/filecubit/filemanage_cubit.dart';
 import 'package:google_drive_clone/utils/constant.dart';
 import 'package:google_drive_clone/widgets/widgets.dart';
 import 'package:quickly/quickly.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -16,7 +18,6 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: const FloatingButton(),
       body: pages[selectedIndex],
       bottomNavigationBar: bottomBar(),
     );

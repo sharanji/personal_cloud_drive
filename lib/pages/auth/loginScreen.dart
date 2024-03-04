@@ -3,6 +3,7 @@ import 'package:google_drive_clone/logic/bloc/auth/auth_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:google_drive_clone/logic/bloc/file/filebloc_bloc.dart';
 import 'package:google_drive_clone/pages/home/home_screen.dart';
 import 'package:google_drive_clone/pages/main/main_screen.dart';
 
@@ -16,7 +17,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   void _saveForm(BuildContext context) async {
-    Map loginData = {'userName': _userName.text, 'password': _password.text};
+    Map loginData = {'mobile': _userName.text, 'password': _password.text};
     context.read<AuthBloc>().add(TryLogin(loginData));
   }
 
@@ -47,12 +48,14 @@ class _LoginPageState extends State<LoginPage> {
                 content: Text("Authentication Successful"),
               ),
             );
+            context.read<FileBloc>().add(FileBlocFetch());
+
             Navigator.of(context)
                 .pushReplacement(MaterialPageRoute(builder: (ctx) => const MainScreen()));
           } else if (state is AuthFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text("Invalid Credtentials"),
+              SnackBar(
+                content: Text(state.errorMessage),
               ),
             );
           }
@@ -125,20 +128,23 @@ class _LoginPageState extends State<LoginPage> {
                                   controller: _userName,
                                   style: const TextStyle(color: Colors.black),
                                   decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.zero,
-                                      border: const OutlineInputBorder(),
-                                      labelText: 'Email',
-                                      labelStyle: TextStyle(
-                                          color: myFocusNode.hasFocus ? Colors.blue : Colors.black),
-                                      prefixIcon:
-                                          Icon(Icons.email, color: Theme.of(context).primaryColor)),
+                                    contentPadding: EdgeInsets.zero,
+                                    border: const OutlineInputBorder(),
+                                    labelText: 'Mobile Number',
+                                    labelStyle: TextStyle(
+                                      color: myFocusNode.hasFocus ? Colors.blue : Colors.black,
+                                    ),
+                                    prefixIcon:
+                                        Icon(Icons.email, color: Theme.of(context).primaryColor),
+                                  ),
                                   validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Enter valid email address';
+                                    if (value == null || value.length < 10) {
+                                      return 'Enter valid Mobile Number';
                                     }
+
                                     return null;
                                   },
-                                  keyboardType: TextInputType.emailAddress,
+                                  keyboardType: TextInputType.number,
                                 ),
                                 Container(
                                   height: 30,

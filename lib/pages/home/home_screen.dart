@@ -1,4 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_drive_clone/logic/bloc/file/filebloc_bloc.dart';
+import 'package:google_drive_clone/logic/filecubit/filemanage_cubit.dart';
+import 'package:google_drive_clone/pages/components/file_list.dart';
 import 'package:quickly/quickly.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -10,6 +15,12 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool isListView = true;
+
+  @override
+  void initState() {
+    context.read<FileBloc>().add(FileBlocFetch(parentId: 0));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,33 +69,27 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
           const Divider(),
-          ListTile(
-            leading: SizedBox(
-              width: 60,
-              height: 60,
-              child: Image.asset('assets/word.png'),
+          Expanded(
+            child: SingleChildScrollView(
+              child: BlocBuilder<FileBloc, FileblocState>(builder: (context, state) {
+                if (state is FileblocSuccess) {
+                  return Column(
+                    children: [
+                      ...state.files[0]!.map(
+                        (f) => Column(
+                          children: [
+                            FileList(f),
+                            const Divider(),
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+                }
+                return const CupertinoActivityIndicator();
+              }),
             ),
-            title: const Text("Sample-word.doc"),
           ),
-          const Divider(),
-          ListTile(
-            leading: SizedBox(
-              width: 60,
-              height: 60,
-              child: Image.asset('assets/gallery.png'),
-            ),
-            title: const Text("IMG-675-wed.png"),
-          ),
-          const Divider(),
-          ListTile(
-            leading: SizedBox(
-              width: 60,
-              height: 60,
-              child: Image.asset('assets/excel.png'),
-            ),
-            title: const Text("Sample-excel.doc"),
-          ),
-          const Divider(),
         ],
       ),
       drawer: Drawer(
@@ -104,6 +109,12 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ).wBox(250),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add),
+        onPressed: () {
+          context.read<FilemanageCubit>().selectAndUpload(context, 0);
+        },
+      ),
     );
   }
 }
